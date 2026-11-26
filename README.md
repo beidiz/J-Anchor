@@ -190,7 +190,8 @@ To make the chosen ρ the default, add a `ModelSpec` entry to `MODELS` in `janch
 
 `eval/` holds the evaluation code and judge prompts. The evaluation sets are in `data/eval/<suite>/<dataset>.jsonl`
 (fields: `uid`, `prompt`, plus `behavior` for the harmful sets, `prefill` for `deep`, `answer` for `math`); `fixed`,
-`benign` and `math` are included in the repository, `deep` is not (see [Deep prefill](#deep-prefill)).
+`benign` and `math` are included in the repository, `deep` is downloaded from Hugging Face on request (see
+[Deep prefill](#deep-prefill)).
 
 | suite | datasets | prefill (the attack) | metric |
 |---|---|---|---|
@@ -251,8 +252,18 @@ following the deep-prefill definition of [Qi et al. (2025)](https://arxiv.org/ab
 3. The evaluation forces the first 500 tokens of `prefill`, counted with each target model's own tokenizer
    (`--prefill field --prefill_tokens 500`); this truncation happens at run time.
 
-**Released sets and excluded requests.** The deep-prefill sets will be released as a gated dataset on Hugging Face
-(access on request, for safety research only). Because a complete response to them is too sensitive to distribute,
+**Released sets and excluded requests.** The deep-prefill sets are released as a gated dataset on Hugging Face,
+[`Beidiz/J-Anchor-deep-prefill`](https://huggingface.co/datasets/Beidiz/J-Anchor-deep-prefill) (access on request,
+for safety research only). After your request is approved:
+
+```bash
+hf auth login
+hf download Beidiz/J-Anchor-deep-prefill --repo-type dataset --local-dir /tmp/jdeep
+mkdir -p data/eval/deep && cp /tmp/jdeep/data/*.jsonl data/eval/deep/
+python -m eval.evaluate --model llama --suites deep --out runs/llama
+```
+
+Because a complete response to them is too sensitive to distribute,
 **six requests concerning the sexual exploitation of minors are excluded** from the release: StrongREJECT
 `strongreject313-00211`, `-00218`, `-00231`, `-00234`, `-00241` and AdvBench `advbench100-00082`. The released sets
 therefore contain StrongREJECT 308, AdvBench 99 and HarmBench 159 requests, while the paper's deep-prefill results
