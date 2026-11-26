@@ -1,6 +1,6 @@
 """Generate and judge the evaluation suites of one model; report every dataset separately (no averages).
 
-    suite    datasets ($JANCHOR_EVAL_DATA/<suite>/)       prefill                    max_new   metric
+    suite    datasets (data/eval/<suite>/)                prefill                    max_new   metric
     fixed    strongreject, advbench, harmbench           fixed template             512       ASR   (HarmBench-Llama-2-13b-cls)
     deep     strongreject, advbench, harmbench           first 500 tokens of row    512       ASR
     benign   xstest, oktest                              none                       256       ORR   (WildGuard refusal)
@@ -38,7 +38,8 @@ def main():
     ap.add_argument("--model", required=True, help="a registered key, or an HF repo id (with --lens)")
     ap.add_argument("--lens", default=None, help="J-lens .pt file (required for a model that is not registered)")
     ap.add_argument("--out", required=True)
-    ap.add_argument("--suites", default="fixed,deep,benign,math")
+    ap.add_argument("--suites", default="fixed,benign,math",
+                    help="comma-separated; 'deep' needs data/eval/deep/ (not shipped, see the README)")
     ap.add_argument("--rho", type=float, default=None); ap.add_argument("--tau", type=float, default=0.75)
     ap.add_argument("--gate", default="auto", choices=["auto", "on", "off"])
     ap.add_argument("--no_defense", action="store_true"); ap.add_argument("--calib", default="")
@@ -49,6 +50,10 @@ def main():
     for s in suites:
         if s not in SUITES: raise SystemExit(f"unknown suite {s!r}; choose from {', '.join(SUITES)}")
     jobs = [(s, d) for s in suites for d in SUITES[s]["datasets"]]
+    missing = [os.path.join(EVAL, s, f"{d}.jsonl") for s, d in jobs if not os.path.exists(os.path.join(EVAL, s, f"{d}.jsonl"))]
+    if missing:
+        raise SystemExit("evaluation sets not found:\n  " + "\n  ".join(missing) +
+                         "\nthe deep-prefill sets are not shipped with the repository (see 'Deep prefill' in the README)")
     gen = lambda s, d: os.path.join(a.out, s, f"{d}.jsonl")
     judged = lambda s, d: os.path.join(a.out, s, f"{d}.judged.jsonl")
     n_rows = lambda s, d: len(read(os.path.join(EVAL, s, f"{d}.jsonl"))[:a.n or None])
