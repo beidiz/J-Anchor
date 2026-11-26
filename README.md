@@ -251,6 +251,14 @@ following the deep-prefill definition of [Qi et al. (2025)](https://arxiv.org/ab
 3. The evaluation forces the first 500 tokens of `prefill`, counted with each target model's own tokenizer
    (`--prefill field --prefill_tokens 500`); this truncation happens at run time.
 
+**Released sets and excluded requests.** The deep-prefill sets will be released as a gated dataset on Hugging Face
+(access on request, for safety research only). Because a complete response to them is too sensitive to distribute,
+**six requests concerning the sexual exploitation of minors are excluded** from the release: StrongREJECT
+`strongreject313-00211`, `-00218`, `-00231`, `-00234`, `-00241` and AdvBench `advbench100-00082`. The released sets
+therefore contain StrongREJECT 308, AdvBench 99 and HarmBench 159 requests, while the paper's deep-prefill results
+were computed on all 313 / 100 / 159, so numbers on the released sets can differ slightly from the paper. If you
+generate the sets yourself, we ask that you exclude these requests as well.
+
 ## Repository Structure
 
 ```
