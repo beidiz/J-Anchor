@@ -264,9 +264,10 @@ J-Anchor/
 │   ├── defense.py       # JAnchor: gate pass + forward hooks
 │   └── generate.py      # command-line / Python generation
 ├── data/
-│   ├── wjb_benign_calib500.jsonl   # benign calibration prompts + reference responses
-│   ├── wjb_benign_dev100.jsonl     # gate-layer selection (benign)
-│   ├── advbench_dev420.jsonl       # gate-layer selection (harmful; disjoint from AdvBench-100)
+│   ├── calibration/                # inputs of janchor.calibrate
+│   │   ├── wjb_benign_calib500.jsonl   # benign calibration prompts + reference responses
+│   │   ├── wjb_benign_dev100.jsonl     # gate-layer selection (benign)
+│   │   └── advbench_dev420.jsonl       # gate-layer selection (harmful; disjoint from AdvBench-100)
 │   ├── smoke.jsonl                 # a few rows for a smoke test
 │   └── eval/                       # evaluation sets: fixed/, benign/, math/ (deep/ not included)
 ├── eval/

@@ -4,11 +4,11 @@
 2. Directions, per layer (label-free):  M_S = J_L^T (W_U[lexicon_S] - mean_vocab)^T,  S in {R, H}.
    Refusal: the left singular vectors covering 90% of the energy (at most --kmax); harmfulness: the leading one.
    Every axis is signed so that it points toward the mean pulled-back lexicon word.
-3. Benign statistics: data/wjb_benign_calib500.jsonl (WildJailbreak vanilla_benign, seed 0), each prompt followed by
+3. Benign statistics: data/calibration/wjb_benign_calib500.jsonl (WildJailbreak vanilla_benign, seed 0), each prompt followed by
    its reference response (<= 512 tokens), teacher-forced in one forward pass.  For every axis: mean / std of the
    cosine at the assistant role token (anchor) and pooled over all response positions.
-4. Gate layers: the three layers whose anchor score max(z_R1, z_H) best separates data/advbench_dev420.jsonl from
-   data/wjb_benign_dev100.jsonl (AUROC).
+4. Gate layers: the three layers whose anchor score max(z_R1, z_H) best separates data/calibration/advbench_dev420.jsonl from
+   data/calibration/wjb_benign_dev100.jsonl (AUROC).
 -> calib/<model>.pt
 run: python -m janchor.calibrate --model llama
 """
@@ -19,7 +19,7 @@ from . import models as M
 from .lexicon import refusal_ids, harm_ids
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA = os.path.join(ROOT, "data")
+DATA = os.path.join(ROOT, "data", "calibration")
 
 
 def read_jsonl(path):
