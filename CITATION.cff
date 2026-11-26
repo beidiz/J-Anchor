@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use J-Anchor, please cite the paper below."
+title: "J-Anchor: Defending Against Prefill Attacks via J-Space Selective Refusal Restoration"
+repository-code: "https://github.com/beidiz/J-Anchor"
+url: "https://arxiv.org/abs/2611.01342"
+authors:
+  - given-names: Running
+    family-names: Yang
+  - given-names: Beidi
+    family-names: Zhao
+  - given-names: Xiaoxiao
+    family-names: Li
+preferred-citation:
+  type: article
+  title: "J-Anchor: Defending Against Prefill Attacks via J-Space Selective Refusal Restoration"
+  authors:
+    - given-names: Running
+      family-names: Yang
+    - given-names: Beidi
+      family-names: Zhao
+    - given-names: Xiaoxiao
+      family-names: Li
+  year: 2026
+  journal: "arXiv preprint arXiv:2611.01342"
+  url: "https://arxiv.org/abs/2611.01342"
+  identifiers:
+    - type: doi
+      value: 10.48550/arXiv.2611.01342
+license: MIT
